@@ -20,7 +20,6 @@ class Chargify_CommonTest extends PHPUnit_Framework_TestCase
   public function setUp()
   {
     $this->Customer = Chargify::factory('Customer');
-    echo "Hit er";
   }
   
   /**
@@ -32,8 +31,6 @@ class Chargify_CommonTest extends PHPUnit_Framework_TestCase
 	 */
   public function testConnect()
   {
-        echo "Hit er2";
-
     $this->Customer->listCustomers();
     $connect = $this->Customer->callInfo;
      

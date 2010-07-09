@@ -28,16 +28,36 @@ class Chargify_Customer extends Chargify_Common
   
   public function listCustomers()
   {
-    try{
-      $list = $this->sendRequest('customers');
-    } catch(Exception $e) {
-      throw new Chargify_Exception();
-    }
+    $endpoint = 'customers';
+    return $this->sendRequest($endpoint);
   }
   
   /**
-  */
-  public function getCustomer($value)
+   * getCustomerById
+   *
+   * @access    public
+   * @param     integer   $id     Chargify Customer Id
+   * @throws    Chargify_Exception
+   */
+  public function getCustomerById($id)
+  {
+    $endpoint = 'customers/' . $id;
+    return $this->sendRequest($endpoint);
+  }
+  
+  /**
+   * getCustomerByReference
+   *
+   * @access    public
+   * @param     string      $value    Customer reference
+   * @throws    Chargify_Exception
+   */
+  public function getCustomerByReference($value)
+  {
+    $endpoint = 'customers/lookup';
+    $data     = array('reference' => $value);
+    return $this->sendRequest($endpoint, $data);
+  }
 }
 
 ?>

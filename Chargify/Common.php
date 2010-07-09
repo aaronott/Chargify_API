@@ -16,10 +16,11 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com>
  * @copyright   2010 Aaron Ott
- */ 
+ */
+require_once 'Chargify/Response.php';
+
 abstract class Chargify_Common
 {
-
     /**
      * Last API URI called
      *
@@ -53,10 +54,18 @@ abstract class Chargify_Common
      * @param       array       $params         GET arguments of API call
      * @return      mixed
      */
-    protected function sendRequest($endPoint, $data='', $method='GET', $format='json')
+    protected function sendRequest($endPoint, $data=array(), $method='GET', $format='json')
     {
         $uri = Chargify::$uri .'/'. $endPoint .'.'.$format;
 
+				if(strtoupper($method) == 'GET' && !empty($data))
+				{
+						$params = array();
+						foreach ($data as $key => $val) {
+								$params[] = $key . '=' . urlencode($val);
+						}
+						$uri .= '?' . implode('&', $params);
+				}
         $this->lastCall = $uri;
 
         $ch = curl_init();
@@ -68,10 +77,10 @@ abstract class Chargify_Common
         curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+        //curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
         curl_setopt($ch, CURLOPT_USERPWD, Chargify::$apikey . ':' . Chargify::$password);
         
-        if ($params['type'] == 'json') {
+        if ($format == 'json') {
 	        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 	            'Content-Type: application/json',
 	            'Accept: application/json'
@@ -107,9 +116,9 @@ abstract class Chargify_Common
 
         curl_close($ch);
 				
-				/**
+				
         $response = Chargify_Response::factory(
-            $params['type'], 
+            $format, 
             $this->lastResponse
         );
 
@@ -118,6 +127,6 @@ abstract class Chargify_Common
         } catch (Chargify_Response_Exception $e) {
             throw new Chargify_Exception($e->getMessage(), $e->getCode(), $this->lastCall, $this->lastResponse); 
         }
-				**/
+				
     }
 }

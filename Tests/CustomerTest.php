@@ -62,9 +62,6 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   public function testListCustomers($value)
   {
     $customers = $this->Customer->listCustomers();
-    //$list = $this->Customer->lastResponse;
-    
-    //$customers = json_decode($list);
     
     $this->assertSame($value, $customers[0]->customer->reference);
     $this->assertTrue(is_array($customers));
@@ -82,11 +79,8 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
 	 */
   public function testGetCustomerById($value)
   {
-    $customer = $this->Customer->getCustomer($value);
-    
-    //$customer = json_decode($response);
-    
-    $this->assertSame($value, $customer->customer->reference);
+    $customer = $this->Customer->getCustomerById($value);
+    $this->assertSame($value, $customer->customer->id);
   }
   
   /**
@@ -101,7 +95,8 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
 	 */
   public function testGetCustomerByReference($value)
   {
-    
+    $customer = $this->Customer->getCustomerByReference($value);
+    $this->assertSame($value, $customer->customer->reference);
   }
 }
 ?>
