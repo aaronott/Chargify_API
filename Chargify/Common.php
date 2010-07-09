@@ -1,5 +1,22 @@
 <?php
 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+ * Common class for Chargify API endpoints
+ *
+ * PHP version 5.1.0+
+ *
+ * LICENSE: This source file is subject to version 3.0 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_0.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @package     Chargify
+ * @author      Aaron Ott <aaron.ott@gmail.com>
+ * @copyright   2010 Aaron Ott
+ */ 
 abstract class Chargify_Common
 {
 
@@ -20,6 +37,14 @@ abstract class Chargify_Common
      */
     public $lastResponse = '';
 
+		/**
+		 * Information about the last call made
+		 *
+		 * @access 			public
+		 * @var					string			$callInfo
+		 */
+		 public $callInfo = '';
+		 
     /**
      * Send a request to the API
      *
@@ -43,7 +68,7 @@ abstract class Chargify_Common
         curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        //curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
+        curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
         curl_setopt($ch, CURLOPT_USERPWD, Chargify::$apikey . ':' . Chargify::$password);
         
         if ($params['type'] == 'json') {
@@ -74,13 +99,15 @@ abstract class Chargify_Common
         }
         
         $this->lastResponse = curl_exec($ch);
-
+				$this->callInfo = curl_getinfo($ch);
+				
         if ($this->lastResponse === false) {
             throw new Chargify_Exception('Curl error: ' . curl_error($ch), curl_errno($ch));
         }
 
         curl_close($ch);
-/**
+				
+				/**
         $response = Chargify_Response::factory(
             $params['type'], 
             $this->lastResponse
@@ -91,6 +118,6 @@ abstract class Chargify_Common
         } catch (Chargify_Response_Exception $e) {
             throw new Chargify_Exception($e->getMessage(), $e->getCode(), $this->lastCall, $this->lastResponse); 
         }
-**/
+				**/
     }
 }
