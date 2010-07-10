@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="c15fa3c0-8a12-4259-bdc1-b6a5c4527410" kpf_version="4" name="chargify.kpf">
+<preference-set idref="c15fa3c0-8a12-4259-bdc1-b6a5c4527410">
+  <boolean id="import_live">1</boolean>
+</preference-set>
+</project>

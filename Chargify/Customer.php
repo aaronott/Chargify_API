@@ -25,7 +25,12 @@
  */
 class Chargify_Customer extends Chargify_Common
 {
-  
+  /**
+   * listCustomers
+   *
+   * @access public
+   * @throws Chargify_Exception
+   */
   public function listCustomers()
   {
     $endpoint = 'customers';
@@ -41,6 +46,11 @@ class Chargify_Customer extends Chargify_Common
    */
   public function getCustomerById($id)
   {
+    if(!is_numeric($id))
+    {
+      throw new Chargify_Exception("ID must be numeric");
+    }
+    
     $endpoint = 'customers/' . $id;
     return $this->sendRequest($endpoint);
   }
@@ -113,6 +123,11 @@ class Chargify_Customer extends Chargify_Common
    */
   public function updateCustomer($id, $update)
   {
+    if(!is_numeric($id))
+    {
+      throw new Chargify_Exception("ID must be numeric");
+    }
+    
     $endpoint = 'customers/' . $id;
     $response = $this->sendRequest($endpoint, json_encode($update), 'PUT');
     
@@ -135,6 +150,11 @@ class Chargify_Customer extends Chargify_Common
    */
   public function deleteCustomer($id)
   {
+    if(!is_numeric($id))
+    {
+      throw new Chargify_Exception("ID must be numeric");
+    }
+    
     $endpoint = 'customers/' . $id;
     $response = $this->sendRequest($endpoint, '' , 'DELETE');
     
