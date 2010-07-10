@@ -52,6 +52,61 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
 	}
   
   /**
+	 * Provides test data for testCreateCustomer()
+	 *
+	 * @return array
+	 */
+  function providerCreateCustomer()
+	{
+    return array(
+      // bad parameter
+      array(
+            array(
+              'first_name'  => 'first2',
+              'last_name'   => 'last2',
+              'email'       => 'first.last@example.com',
+              'bad_param'   => 'badData',
+            ), 201
+      ),
+      // all good
+      array(
+            array(
+              'first_name'    => 'first3',
+              'last_name'     => 'last3',
+              'email'         => 'first3.last3@example.com',
+              'organization'  => 'org3',
+            ), 201
+      ),
+    );
+	}
+  
+  /**
+	 * Provides test data for testCreateCustomer()
+	 *
+	 * @return array
+	 */
+  function providerUpdateCustomer()
+	{
+    return array(
+      // bad parameter
+      array( 'id' => 87688),
+    );
+  }
+  
+  /**
+	 * Provides test data for testDeleteCustomer()
+	 *
+	 * @return array
+	 */
+  function providerDeleteCustomer()
+	{
+    return array(
+      // bad parameter
+      array( 'id' => 87694),
+    );
+  }
+  
+  /**
 	 * Tests Customer::listCustomers
 	 * 
 	 * @test
@@ -84,7 +139,7 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Customer::getCustomer
+	 * Tests Customer::getCustomerByReference
 	 *
 	 * Get a customer by id
 	 * 
@@ -97,6 +152,60 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   {
     $customer = $this->Customer->getCustomerByReference($value);
     $this->assertSame($value, $customer->customer->reference);
+  }
+  
+  /**
+   * Tests Customer::createCustomer
+   *
+   * @test
+   * @dataProvider providerCreateCustomer
+   * @covers        Customer::createCustomer
+   * @param         array      $customer
+   * @param         int        $code      HTTP_reponse code
+   */
+  public function testCreateCustomer($customer, $code)
+  {
+    // Commented out because I don't want to go over
+    // my customer limit while testing
+    /**
+    $newcustomer = $this->Customer->createCustomer($customer);
+    $this->assertSame($customer['first_name'], $newcustomer->customer->first_name);
+    $info = $this->Customer->callInfo;
+    $this->assertSame($info['http_code'], $code);
+    **/
+  }
+  
+  /**
+   * Tests Customer::updateCustomer
+   *
+   * @test
+   * @dataProvider  providerUpdateCustomer
+   * @covers        Customer::updateCustomer
+   * @param         int       $id
+   */
+  public function testUpdateCustomer($id)
+  {
+    $update = array( 'customer' => array('first_name' => 'updated'));
+    $updatedcustomer = $this->Customer->updateCustomer($id, $update);
+    $this->assertSame($update['customer']['first_name'], $updatedcustomer->customer->first_name);
+  }
+  
+  /**
+   * Tests Customer::deleteCustomer
+   *
+   * @test
+   * @dataProvider  providerDeleteCustomer
+   * @covers        Customer::deleteCustomer
+   * @param         int     $id   Chargify Id
+   */
+  public function testDeleteCustomer($id)
+  {
+    // Commented out because Chargify doesn't currenty
+    // support delete through the API
+    /**
+    $deleted = $this->Customer->deleteCustomer($id);
+    $this->assertTrue($deleted);
+    **/
   }
 }
 ?>

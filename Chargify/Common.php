@@ -54,7 +54,7 @@ abstract class Chargify_Common
      * @param       array       $params         GET arguments of API call
      * @return      mixed
      */
-    protected function sendRequest($endPoint, $data=array(), $method='GET', $format='json')
+    protected function sendRequest($endPoint, $data='', $method='GET', $format='json')
     {
         $uri = Chargify::$uri .'/'. $endPoint .'.'.$format;
 

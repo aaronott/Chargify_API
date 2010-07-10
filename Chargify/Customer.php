@@ -58,6 +58,93 @@ class Chargify_Customer extends Chargify_Common
     $data     = array('reference' => $value);
     return $this->sendRequest($endpoint, $data);
   }
+  
+  /**
+   * createCustomer
+   *
+   * To create a customer, pass an array with the following data
+   * array (
+   *  "first_name"  => "first name",    // (REQUIRED)
+   *  "last_name"   => "last name",     // (REQUIRED)
+   *  "email"       => "email address", // (REQUIRED)
+   *  "organization"=> "company name",
+   *  "reference"   => "internal id"
+   * )
+   * @access    public
+   * @param     array   $customer   Customer data
+   * @throws    Chargify_Exception
+   */
+  public function createCustomer($customer)
+  {
+    
+    $required = array('first_name','last_name','email');
+    $allowed = array('first_name','last_name','email','organization', 'reference');
+    
+    // ensure that only the allowed parameters are passed
+    $customer_array = array();
+    foreach($customer as $key => $val)
+    {
+      if(in_array($key, $allowed)) {
+        $customer_array['customer'][$key] = $val;
+      }
+    }
+    
+    foreach($required as $key)
+    {
+      if(! isset($customer_array['customer'][$key]))
+      {
+        throw new Chargify_Exception('Required field missing');
+      }
+    } 
+    
+    $endpoint = 'customers';
+    $customer_data = json_encode($customer_array);
+    
+    return $this->sendRequest($endpoint, $customer_data, 'POST');
+  }
+  
+  /**
+   * updateCustomer
+   *
+   * @access    public
+   * @param     int     $id     Chargify Id
+   * @param     array   $update Updated customer information
+   * @throws    Chargify_Exception
+   */
+  public function updateCustomer($id, $update)
+  {
+    $endpoint = 'customers/' . $id;
+    $response = $this->sendRequest($endpoint, json_encode($update), 'PUT');
+    
+    if(isset($response->errors))
+    {
+      throw new Chargify_Exception("Unable to update customer: " . $response->errors[0]);
+    }
+    
+    return $response;
+  }
+  
+  /**
+   * deleteCustomer
+   *
+   *  Delete is not currently supported by the Chargify API
+   *  
+   * @access    public
+   * @param     int     $id     Chargify Id
+   * @throws    Chargify_Exception
+   */
+  public function deleteCustomer($id)
+  {
+    $endpoint = 'customers/' . $id;
+    $response = $this->sendRequest($endpoint, '' , 'DELETE');
+    
+    if($this->callInfo['http_code'] == 403)
+    {
+      throw new Chargify_Exception("Unable to delete customer: " . $response->errors[0]);
+    }
+    
+    return $response;
+  }
 }
 
 ?>
