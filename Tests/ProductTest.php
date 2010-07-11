@@ -48,10 +48,10 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Product::listProducts
+   * Tests Chargify_Product::listProducts
    *
    * @test
-	 * @covers Product::listProducts
+	 * @covers Chargify_Product::listProducts
 	 */
   function testListProducts()
   {
@@ -60,11 +60,11 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Product::getProductById
+   * Tests Chargify_Product::getProductById
    *
    * @test
    * @dataProvider    providerProductId
-   * @covers          Product::getProductById
+   * @covers          Chargify_Product::getProductById
    * @param           int     $id     Chargify Product id
    */
   function testGetProductById($id)
@@ -75,10 +75,10 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
 
 
   /**
-   * Tests Product::getProductById
+   * Tests Chargify_Product::getProductById
    *
    * @test
-   * @covers          Product::getProductById
+   * @covers          Chargify_Product::getProductById
    * @expectedException Chargify_Exception
    */
   function testGetProductByBadId()
@@ -87,11 +87,11 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Product::getProductByHandle
+   * Tests Chargify_Product::getProductByHandle
    *
    * @test
    * @dataProvider  providerProductHandle
-   * @covers        Product::getProductByHandle
+   * @covers        Chargify_Product::getProductByHandle
    * @param         string    $handle   Chargify Product Handle
    */
   function testGetProductByHandle($handle)
@@ -101,10 +101,10 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Product::getProductByHandle
+   * Tests Chargify_Product::getProductByHandle
    *
    * @test
-   * @covers        Product::getProductByHandle
+   * @covers        Chargify_Product::getProductByHandle
    * @expectedException Chargify_Exception
    */
   function testGetProductByBadHandle()

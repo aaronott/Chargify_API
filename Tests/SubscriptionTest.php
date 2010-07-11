@@ -34,10 +34,10 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Subscription::listSubscriptions
+   * Tests Chargify_Subscription::listSubscriptions
    *
    * @test
-   * @covers  Subscription::listSubscriptions
+   * @covers  Chargify_Subscription::listSubscriptions
    */
   function testListSubscriptions()
   {
@@ -46,12 +46,12 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Subscription::listSubscriptionsByCustomer
+   * Tests Chargify_Subscription::listSubscriptionsByCustomer
    *
    * @test
    * @dataProvider  providerSubscriptionCustomers
    * @param         int     $id     Chargify Customer id
-   * @covers        Subscription::listSubscriptionsByCustomer
+   * @covers        Chargify_Subscription::listSubscriptionsByCustomer
    */
   function testListSubscriptionsByCustomer($id)
   {

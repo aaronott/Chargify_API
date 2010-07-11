@@ -107,11 +107,11 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Customer::listCustomers
+	 * Tests Chargify_Customer::listCustomers
 	 * 
 	 * @test
 	 * @dataProvider providerCustomer
-	 * @covers Customer::listCustomers
+	 * @covers Chargify_Customer::listCustomers
 	 * @param array $value
 	 */
   public function testListCustomers($value)
@@ -123,13 +123,13 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Customer::getCustomer
+	 * Tests Chargify_Customer::getCustomer
 	 *
 	 * Get a customer by reference
 	 * 
 	 * @test
 	 * @dataProvider providerCustomerId
-	 * @covers Customer::getCustomer
+	 * @covers Chargify_Customer::getCustomer
 	 * @param array $value
 	 */
   public function testGetCustomerById($value)
@@ -139,13 +139,13 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Customer::getCustomerByReference
+	 * Tests Chargify_Customer::getCustomerByReference
 	 *
 	 * Get a customer by id
 	 * 
 	 * @test
 	 * @dataProvider providerCustomer
-	 * @covers Customer::getCustomer
+	 * @covers Chargify_Customer::getCustomer
 	 * @param array $value
 	 */
   public function testGetCustomerByReference($value)
@@ -155,11 +155,11 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Customer::createCustomer
+   * Tests Chargify_Customer::createCustomer
    *
    * @test
    * @dataProvider providerCreateCustomer
-   * @covers        Customer::createCustomer
+   * @covers        Chargify_Customer::createCustomer
    * @param         array      $customer
    * @param         int        $code      HTTP_reponse code
    */
@@ -176,11 +176,11 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Customer::updateCustomer
+   * Tests Chargify_Customer::updateCustomer
    *
    * @test
    * @dataProvider  providerUpdateCustomer
-   * @covers        Customer::updateCustomer
+   * @covers        Chargify_Customer::updateCustomer
    * @param         int       $id
    */
   public function testUpdateCustomer($id)
@@ -191,11 +191,11 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Customer::deleteCustomer
+   * Tests Chargify_Customer::deleteCustomer
    *
    * @test
    * @dataProvider  providerDeleteCustomer
-   * @covers        Customer::deleteCustomer
+   * @covers        Chargify_Customer::deleteCustomer
    * @param         int     $id   Chargify Id
    */
   public function testDeleteCustomer($id)
