@@ -123,13 +123,13 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Chargify_Customer::getCustomer
+	 * Tests Chargify_Customer::getCustomerById
 	 *
 	 * Get a customer by reference
 	 * 
 	 * @test
 	 * @dataProvider providerCustomerId
-	 * @covers Chargify_Customer::getCustomer
+	 * @covers Chargify_Customer::getCustomerById
 	 * @param array $value
 	 */
   public function testGetCustomerById($value)
@@ -145,7 +145,7 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
 	 * 
 	 * @test
 	 * @dataProvider providerCustomer
-	 * @covers Chargify_Customer::getCustomer
+	 * @covers Chargify_Customer::getCustomerByReference
 	 * @param array $value
 	 */
   public function testGetCustomerByReference($value)
