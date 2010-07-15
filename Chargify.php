@@ -26,13 +26,13 @@ abstract class Chargify
     /***
      * URL for the chargify service
      */
-     public static $uri = 'https://overnightlife.chargify.com';
+     public static $uri = '';
 
 
     /**
      * API key
      */
-     public static $apikey = 'D4iTya8Qp4zK7S-wzY0h';
+     public static $apikey = '';
 
     /**
      * API Password
