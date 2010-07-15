@@ -16,7 +16,6 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com> 
  * @copyright   2010 Aaron Ott
- * @license     http://www.opensource.org/licenses/bsd-license.php 
  */ 
 require_once 'Chargify/Common.php';
 require_once 'Chargify/Exception.php';
