@@ -48,68 +48,68 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Chargify_Product::listProducts
+   * Tests Chargify_Product::all
    *
    * @test
-	 * @covers Chargify_Product::listProducts
+	 * @covers Chargify_Product::all
 	 */
-  function testListProducts()
+  function testProductsAll()
   {
-    $list = $this->Product->listProducts();
+    $list = $this->Product->all();
     $this->assertTrue(is_array($list));
   }
   
   /**
-   * Tests Chargify_Product::getProductById
+   * Tests Chargify_Product::by_id
    *
    * @test
    * @dataProvider    providerProductId
-   * @covers          Chargify_Product::getProductById
+   * @covers          Chargify_Product::by_id
    * @param           int     $id     Chargify Product id
    */
-  function testGetProductById($id)
+  function testById($id)
   {
-    $product = $this->Product->getProductById($id);
+    $product = $this->Product->by_id($id);
     $this->assertTrue(is_object($product));
   }
 
 
   /**
-   * Tests Chargify_Product::getProductById
+   * Tests Chargify_Product::by_id
    *
    * @test
-   * @covers          Chargify_Product::getProductById
+   * @covers          Chargify_Product::by_id
    * @expectedException Chargify_Exception
    */
-  function testGetProductByBadId()
+  function testByBadId()
   {
-    $product = $this->Product->getProductById(9999999);
+    $product = $this->Product->by_id(9999999);
   }
   
   /**
-   * Tests Chargify_Product::getProductByHandle
+   * Tests Chargify_Product::by_handle
    *
    * @test
    * @dataProvider  providerProductHandle
-   * @covers        Chargify_Product::getProductByHandle
+   * @covers        Chargify_Product::by_handle
    * @param         string    $handle   Chargify Product Handle
    */
-  function testGetProductByHandle($handle)
+  function testByHandle($handle)
   {
-    $product = $this->Product->getProductByHandle($handle);
+    $product = $this->Product->by_handle($handle);
     $this->assertTrue(is_object($product));
   }
   
   /**
-   * Tests Chargify_Product::getProductByHandle
+   * Tests Chargify_Product::by_handle
    *
    * @test
-   * @covers        Chargify_Product::getProductByHandle
+   * @covers        Chargify_Product::by_handle
    * @expectedException Chargify_Exception
    */
-  function testGetProductByBadHandle()
+  function testByBadHandle()
   {
-    $product = $this->Product->getProductByHandle('Does Not Exist');
+    $product = $this->Product->by_handle('Does Not Exist');
   }
 }
   

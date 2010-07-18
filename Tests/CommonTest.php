@@ -31,7 +31,7 @@ class Chargify_CommonTest extends PHPUnit_Framework_TestCase
 	 */
   public function testConnect()
   {
-    $this->Customer->listCustomers();
+    $this->Customer->all();
     $connect = $this->Customer->callInfo;
      
     // test a simple connect
@@ -49,7 +49,7 @@ class Chargify_CommonTest extends PHPUnit_Framework_TestCase
   {
     $apikey = Chargify::$apikey;
     Chargify::$apikey .= 'x';
-    $this->Customer->listCustomers();
+    $this->Customer->all();
     $connect = $this->Customer->callInfo;
     
     // test a simple connect

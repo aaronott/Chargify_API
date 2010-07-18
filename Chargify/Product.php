@@ -26,25 +26,25 @@
 class Chargify_Product extends Chargify_Common
 {
   /**
-   * listProducts
+   * all
    *
    * @access public
    * @throws Chargify_Exception
    */
-  public function listProducts()
+  public function all()
   {
     $endpoint = 'products';
-    return $this->sendRequest($endpoint);
+    return $this->send_request($endpoint);
   }
   
   /**
-   * getProductById
+   * by_id
    *
    * @access  public
    * @param   int   $id   Chargify Product Id
    * @throws  Chargify_Exception
    */
-  public function getProductById($id)
+  public function by_id($id)
   {
     if( ! is_numeric($id))
     {
@@ -52,7 +52,7 @@ class Chargify_Product extends Chargify_Common
     }
     
     $endpoint = 'products/' . $id;
-    $result = $this->sendRequest($endpoint);
+    $result = $this->send_request($endpoint);
     
     if($this->callInfo['http_code'] != 200)
     {
@@ -63,16 +63,16 @@ class Chargify_Product extends Chargify_Common
   }
   
   /**
-   * getProductByHandle
+   * by_handle
    *
    * @access  public
    * @param   int   $handle   Chargify Product Handle
    * @throws  Chargify_Exception
    */
-  public function getProductByHandle($handle)
+  public function by_handle($handle)
   {
     $endpoint = 'products/handle/' . $handle;
-    $result = $this->sendRequest($endpoint);
+    $result = $this->send_request($endpoint);
     
     if($this->callInfo['http_code'] != 200)
     {
