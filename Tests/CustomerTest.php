@@ -107,68 +107,68 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-	 * Tests Chargify_Customer::listCustomers
+	 * Tests Chargify_Customer::all
 	 * 
 	 * @test
 	 * @dataProvider providerCustomer
-	 * @covers Chargify_Customer::listCustomers
+	 * @covers Chargify_Customer::all
 	 * @param array $value
 	 */
-  public function testListCustomers($value)
+  public function testCustomersAll($value)
   {
-    $customers = $this->Customer->listCustomers();
+    $customers = $this->Customer->all();
     
     $this->assertSame($value, $customers[0]->customer->reference);
     $this->assertTrue(is_array($customers));
   }
   
   /**
-	 * Tests Chargify_Customer::getCustomerById
+	 * Tests Chargify_Customer::by_id
 	 *
 	 * Get a customer by reference
 	 * 
 	 * @test
 	 * @dataProvider providerCustomerId
-	 * @covers Chargify_Customer::getCustomerById
+	 * @covers Chargify_Customer::by_id
 	 * @param array $value
 	 */
-  public function testGetCustomerById($value)
+  public function testById($value)
   {
-    $customer = $this->Customer->getCustomerById($value);
+    $customer = $this->Customer->by_id($value);
     $this->assertSame($value, $customer->customer->id);
   }
   
   /**
-	 * Tests Chargify_Customer::getCustomerByReference
+	 * Tests Chargify_Customer::by_reference
 	 *
 	 * Get a customer by id
 	 * 
 	 * @test
 	 * @dataProvider providerCustomer
-	 * @covers Chargify_Customer::getCustomerByReference
+	 * @covers Chargify_Customer::by_reference
 	 * @param array $value
 	 */
-  public function testGetCustomerByReference($value)
+  public function testByReference($value)
   {
-    $customer = $this->Customer->getCustomerByReference($value);
+    $customer = $this->Customer->by_reference($value);
     $this->assertSame($value, $customer->customer->reference);
   }
   
   /**
-   * Tests Chargify_Customer::createCustomer
+   * Tests Chargify_Customer::create
    *
    * @test
    * @dataProvider providerCreateCustomer
-   * @covers        Chargify_Customer::createCustomer
+   * @covers        Chargify_Customer::create
    * @param         array      $customer
    * @param         int        $code      HTTP_reponse code
    */
-  public function testCreateCustomer($customer, $code)
+  public function testCreate($customer, $code)
   {
     // Commented out because I don't want to go over
     // my customer limit while testing
     /**
-    $newcustomer = $this->Customer->createCustomer($customer);
+    $newcustomer = $this->Customer->create($customer);
     $this->assertSame($customer['first_name'], $newcustomer->customer->first_name);
     $info = $this->Customer->callInfo;
     $this->assertSame($info['http_code'], $code);
@@ -176,34 +176,34 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * Tests Chargify_Customer::updateCustomer
+   * Tests Chargify_Customer::update
    *
    * @test
    * @dataProvider  providerUpdateCustomer
-   * @covers        Chargify_Customer::updateCustomer
+   * @covers        Chargify_Customer::update
    * @param         int       $id
    */
-  public function testUpdateCustomer($id)
+  public function testUpdate($id)
   {
     $update = array( 'customer' => array('first_name' => 'updated'));
-    $updatedcustomer = $this->Customer->updateCustomer($id, $update);
+    $updatedcustomer = $this->Customer->update($id, $update);
     $this->assertSame($update['customer']['first_name'], $updatedcustomer->customer->first_name);
   }
   
   /**
-   * Tests Chargify_Customer::deleteCustomer
+   * Tests Chargify_Customer::delete
    *
    * @test
    * @dataProvider  providerDeleteCustomer
-   * @covers        Chargify_Customer::deleteCustomer
+   * @covers        Chargify_Customer::delete
    * @param         int     $id   Chargify Id
    */
-  public function testDeleteCustomer($id)
+  public function testDelete($id)
   {
     // Commented out because Chargify doesn't currenty
     // support delete through the API
     /**
-    $deleted = $this->Customer->deleteCustomer($id);
+    $deleted = $this->Customer->delete($id);
     $this->assertTrue($deleted);
     **/
   }

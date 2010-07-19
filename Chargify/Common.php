@@ -54,7 +54,7 @@ abstract class Chargify_Common
      * @param       array       $params         GET arguments of API call
      * @return      mixed
      */
-    protected function sendRequest($endPoint, $data='', $method='GET', $format='json')
+    protected function send_request($endPoint, $data='', $method='GET', $format='json')
     {
         $uri = Chargify::$uri .'/'. $endPoint .'.'.$format;
 
@@ -62,7 +62,17 @@ abstract class Chargify_Common
 				{
 						$params = array();
 						foreach ($data as $key => $val) {
-								$params[] = $key . '=' . urlencode($val);
+								if(is_array($val))
+								{
+										foreach($val as $v)
+										{
+											$params[] = $key . '[]=' . urlencode($v);
+										}
+								}
+								else
+								{
+										$params[] = $key . '=' . urlencode($val);
+								}
 						}
 						$uri .= '?' . implode('&', $params);
 				}
@@ -100,7 +110,7 @@ abstract class Chargify_Common
             break;
           case 'PUT':
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+						curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
             break;
           case 'DELETE':
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');

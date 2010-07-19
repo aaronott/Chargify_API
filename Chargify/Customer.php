@@ -26,25 +26,25 @@
 class Chargify_Customer extends Chargify_Common
 {
   /**
-   * listCustomers
+   * all
    *
    * @access public
    * @throws Chargify_Exception
    */
-  public function listCustomers()
+  public function all()
   {
     $endpoint = 'customers';
-    return $this->sendRequest($endpoint);
+    return $this->send_request($endpoint);
   }
   
   /**
-   * getCustomerById
+   * by_id
    *
    * @access    public
    * @param     integer   $id     Chargify Customer Id
    * @throws    Chargify_Exception
    */
-  public function getCustomerById($id)
+  public function by_id($id)
   {
     if(!is_numeric($id))
     {
@@ -52,25 +52,25 @@ class Chargify_Customer extends Chargify_Common
     }
     
     $endpoint = 'customers/' . $id;
-    return $this->sendRequest($endpoint);
+    return $this->send_request($endpoint);
   }
   
   /**
-   * getCustomerByReference
+   * by_reference
    *
    * @access    public
    * @param     string      $value    Customer reference
    * @throws    Chargify_Exception
    */
-  public function getCustomerByReference($value)
+  public function by_reference($value)
   {
     $endpoint = 'customers/lookup';
     $data     = array('reference' => $value);
-    return $this->sendRequest($endpoint, $data);
+    return $this->send_request($endpoint, $data);
   }
   
   /**
-   * createCustomer
+   * create
    *
    * To create a customer, pass an array with the following data
    * array (
@@ -84,7 +84,7 @@ class Chargify_Customer extends Chargify_Common
    * @param     array   $customer   Customer data
    * @throws    Chargify_Exception
    */
-  public function createCustomer($customer)
+  public function create($customer)
   {
     
     $required = array('first_name','last_name','email');
@@ -110,18 +110,18 @@ class Chargify_Customer extends Chargify_Common
     $endpoint = 'customers';
     $customer_data = json_encode($customer_array);
     
-    return $this->sendRequest($endpoint, $customer_data, 'POST');
+    return $this->send_request($endpoint, $customer_data, 'POST');
   }
   
   /**
-   * updateCustomer
+   * update
    *
    * @access    public
    * @param     int     $id     Chargify Id
    * @param     array   $update Updated customer information
    * @throws    Chargify_Exception
    */
-  public function updateCustomer($id, $update)
+  public function update($id, $update)
   {
     if(!is_numeric($id))
     {
@@ -129,7 +129,7 @@ class Chargify_Customer extends Chargify_Common
     }
     
     $endpoint = 'customers/' . $id;
-    $response = $this->sendRequest($endpoint, json_encode($update), 'PUT');
+    $response = $this->send_request($endpoint, json_encode($update), 'PUT');
     
     if(isset($response->errors))
     {
@@ -140,7 +140,7 @@ class Chargify_Customer extends Chargify_Common
   }
   
   /**
-   * deleteCustomer
+   * delete
    *
    *  Delete is not currently supported by the Chargify API
    *  
@@ -148,7 +148,7 @@ class Chargify_Customer extends Chargify_Common
    * @param     int     $id     Chargify Id
    * @throws    Chargify_Exception
    */
-  public function deleteCustomer($id)
+  public function delete($id)
   {
     if(!is_numeric($id))
     {
@@ -156,7 +156,7 @@ class Chargify_Customer extends Chargify_Common
     }
     
     $endpoint = 'customers/' . $id;
-    $response = $this->sendRequest($endpoint, '' , 'DELETE');
+    $response = $this->send_request($endpoint, '' , 'DELETE');
     
     if($this->callInfo['http_code'] == 403)
     {

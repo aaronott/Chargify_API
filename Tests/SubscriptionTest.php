@@ -84,7 +84,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
           "expiration_year":"2020"
         }
       }}
-    */
+    */    
     return array(
       array(
         array(
@@ -131,89 +131,226 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
                   array(89738)
                  );
   }
+
+  /**
+   * provider for resetBalance
+   */
+  public function providerResetBalance()
+  {
+    return array(
+                  array(88957)
+                 );
+  }
   
   /**
-   * Tests Chargify_Subscription::listSubscriptions
+   * Tests Chargify_Subscription::all
    *
    * @test
-   * @covers  Chargify_Subscription::listSubscriptions
+   * @covers  Chargify_Subscription::all
    */
-  public function testListSubscriptions()
+  public function testSubscriptionsAll()
   {
-    $list = $this->Subscription->listSubscriptions();
+    $list = $this->Subscription->all();
     $this->assertTrue(is_array($list));
   }
   
   /**
-   * Tests Chargify_Subscription::listSubscriptionsByCustomer
+   * Tests Chargify_Subscription::by_customer
    *
    * @test
    * @dataProvider  providerSubscriptionCustomers
    * @param         int     $id     Chargify Customer id
-   * @covers        Chargify_Subscription::listSubscriptionsByCustomer
+   * @covers        Chargify_Subscription::by_customer
    */
-  public function testListSubscriptionsByCustomer($id)
+  public function testByCustomer($id)
   {
-    $subscriptions = $this->Subscription->listSubscriptionsByCustomer($id);
+    $subscriptions = $this->Subscription->by_customer($id);
     $this->assertTrue(is_array($subscriptions));
   }
   
   /**
-   * Tests Chargify_Subscription::getSubscription
+   * Tests Chargify_Subscription::by_id
    *
    * @test
    * @dataProvider  providerSubscriptionIds
    * @param         int     $id     Chargify Subscription ID
-   * @covers        Chargify_Subscription::getSubscription
+   * @covers        Chargify_Subscription::by_id
    */
-  public function testGetSubscription($id)
+  public function testById($id)
   {
-    $subscription = $this->Subscription->getSubscription($id);
+    $subscription = $this->Subscription->by_id($id);
     $this->assertTrue(is_object($subscription));
   }
   
   /**
-   * Tests Chargify_Subscription::createSubscription
+   * Tests Chargify_Subscription::create
    *
    * @test
    * @dataProvider  providerCreateSubscription
    * @param   array  $subscription  Subscription information
-   * @covers  Chargify_Subscription::createSubscription
+   * @covers  Chargify_Subscription::create
    */
-  public function testCreateSubscription($subscription)
+  
+  public function testCreate($subscription)
   {
-    $result = $this->Subscription->createSubscription($subscription);
+    $result = $this->Subscription->create($subscription);
     $this->assertFalse(isset($result->errors));
     $this->assertTrue(isset($result->subscription));
   }
   
   /**
-   * Tests Chargify_Subscription::updateSubscription
+   * Tests Chargify_Subscription::update
    *
    * @test
    * @dataProvider  providerUpdateSubscription
    * @param   int   $subscription_id    Chargify Subscription ID
    * @param   array $subscription   Subscription information
-   * @covers  Chargify_Subscription::updateSubscription
+   * @covers  Chargify_Subscription::update
    */
-  public function testupdateSubscription($subscription_id, $subscription)
+  public function testUpdate($subscription_id, $subscription)
   {
-    $result = $this->Subscription->updateSubscription($subscription_id, $subscription);
+    $result = $this->Subscription->update($subscription_id, $subscription);
     $this->assertFalse(isset($result->errors));
     $this->assertTrue(isset($result->subscription));
   }
   
   /**
-   * Test Chargify_Subscription::deleteSubscription
+   * Test Chargify_Subscription::delete
    *
    * @test
    * @dataProvider  providerDeleteSubscription
    * @param   int   $subscription_id    Chargify Subscription ID
-   * @covers  Chargify_Subscription::deleteSubscription
+   * @covers  Chargify_Subscription::delete
    */
-  public function testDeleteSubscriptoin($subscription_id)
+  public function testDelete($subscription_id)
   {
-    $result = $this->Subscription->deleteSubscription($subscription_id);
+    $result = $this->Subscription->delete($subscription_id);
     $this->assertTrue($result);
   }
+  
+  /**
+   * Test Chargify_Subscription::reactivate
+   *
+   * @test
+   * @dataProvider  providerDeleteSubscription
+   * @param   int   $subscription_id    Chargify Subscription ID
+   * @covers  Chargify_Subscription::reactivate
+   */
+  public function testReactivate($subscription_id)
+  {
+    $result = $this->Subscription->reactivate($subscription_id);
+    $this->assertTrue($result);
+  }
+  
+  /**
+   * Test Chargify_Subscription::reset_balance
+   *
+   * @test
+   * @dataProvider  providerResetBalance
+   * @param   int   $subscription_id    Chargify Subscription ID
+   * @covers  Chargify_Subscription::reset_balance
+   */
+  
+  public function testResetBalance($subscription_id)
+  {
+    $result = $this->Subscription->reset_balance($subscription_id);
+    $this->assertTrue($result);
+  }
+  
+    /**
+   * Provider for chargeSubscription
+   *
+   * @return array
+   */
+  public function providerChargeSubscription()
+  {
+    return array(
+                 array(
+                       88957,
+                       array(
+                        'amount' => '1.00',
+                        'memo'   => 'This is a credit',
+                       )
+                      ),
+                 );
+  }
+  
+  /**
+   * Tests Chargify_Charge::charge
+   *
+   * @test
+   * @covers  Chargify_Charge::charge
+   * @dataProvider  providerChargeSubscription
+   * @param   int   $subscription_id    Chargify Subscription Id
+   * @param   array $charge
+   */
+  public function testCharge($subscription_id, $charge)
+  {
+    $result = $this->Subscription->charge($subscription_id, $charge);
+    $this->assertTrue($result);
+  }
+  
+    /**
+   * Dataprovider for creditSubscription
+   */
+  public function providerCredit()
+  {
+    return array(
+                 array(
+                       88957,
+                       array(
+                        'amount' => '1.00',
+                        'memo'   => 'This is a credit',
+                       )
+                      ),
+                 );
+  }
+  
+  /**
+   * Tests Chargify_Credit::credit
+   *
+   * @test
+   * @dataProvider    providerCredit
+   * @param           int       $subscription_id    Chargify Subscription ID
+   * @param           array     $credit             Credit information array
+   * @covers          Chargify_Credit::credit
+   */
+  public function testCredit($subscription_id, $credit)
+  {
+    $result = $this->Subscription->credit($subscription_id, $credit);
+    $this->assertTrue($result);
+  }
+  
+  /**
+   * Provider for prorateSubscription
+   *
+   * @return array
+   */
+  function providerProductId()
+  {
+    return array(
+                 array(
+                       88957,
+                       array(
+                        'product_id' => 6765,
+                       )
+                      ),
+                 );
+  }
+  
+  /**
+   * Tests Chargify_Prorate::prorate
+   *
+   * @test
+	 * @covers Chargify_Prorate::prorate
+	 * @dataProvider	providerProductId
+	 * @param		int		$subscription_id		Chargify Subscription
+	 * @param		array	$prorate						Prorate data
+	 */
+  function testProrate($subscription_id, $prorate)
+  {
+    $result = $this->Subscription->prorate($subscription_id, $prorate);
+    $this->assertTrue($result);
+  }
+  
 }
