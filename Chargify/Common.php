@@ -1,7 +1,4 @@
 <?php
-
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Common class for Chargify API endpoints
  *
@@ -16,6 +13,7 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com>
  * @copyright   2010 Aaron Ott
+ * @link				http://support.chargify.com/faqs/api
  */
 require_once 'Chargify/Response.php';
 
@@ -126,7 +124,6 @@ abstract class Chargify_Common
 
         curl_close($ch);
 				
-				
         $response = Chargify_Response::factory(
             $format, 
             $this->lastResponse
@@ -137,6 +134,5 @@ abstract class Chargify_Common
         } catch (Chargify_Response_Exception $e) {
             throw new Chargify_Exception($e->getMessage(), $e->getCode(), $this->lastCall, $this->lastResponse); 
         }
-				
     }
 }

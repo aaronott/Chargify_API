@@ -1,7 +1,4 @@
 <?php
-
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * API implementation for Chargify's web services
  *
@@ -16,6 +13,7 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com> 
  * @copyright   2010 Aaron Ott
+ * @link        http://support.chargify.com/faqs/api
  */ 
 require_once 'Chargify/Common.php';
 require_once 'Chargify/Exception.php';
@@ -27,7 +25,6 @@ abstract class Chargify
      * URL for the chargify service
      */
      public static $uri = '';
-
 
     /**
      * API key
@@ -42,23 +39,22 @@ abstract class Chargify
      */
      public static $password = 'x';
 
+    /**
+     * The factory
+     */
+     public function factory($endPoint)
+     {
+       $file = 'Chargify/' . $endPoint . '.php';
+       if (!include_once($file)) {
+           throw new Chargify_Exception('Endpoint file not found: ' . $file);
+       }
 
-     /**
-      * The factory
-      */
-      public function factory($endPoint)
-      {
-        $file = 'Chargify/' . $endPoint . '.php';
-        if (!include_once($file)) {
-            throw new Chargify_Exception('Endpoint file not found: ' . $file);
-        }
+       $class = 'Chargify_' . $endPoint;
+       if (!class_exists($class)) {
+           throw new Chargify_Exception('Endpoint class not found: ' . $class);
+       }
 
-        $class = 'Chargify_' . $endPoint;
-        if (!class_exists($class)) {
-            throw new Chargify_Exception('Endpoint class not found: ' . $class);
-        }
-
-        $instance = new $class();
-        return $instance;
-      }
+       $instance = new $class();
+       return $instance;
+     }
 }

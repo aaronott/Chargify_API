@@ -1,7 +1,4 @@
 <?php
-
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Response framework for Chargify API
  *
@@ -35,6 +32,7 @@ abstract class Chargify_Response
      * @access      public
      * @param       string      $type       Type of response to create
      * @param       string      $response   Raw response from API
+     * @return      object      $instance   Instance of the Response object
      * @throws      Services_Digg_Exception
      */
     static public function factory($type, $response) {

@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Transaction endpoint class
  *
@@ -39,9 +37,10 @@ class Chargify_Transaction extends Chargify_Common
   /**
    * sanitizeFilters
    *
-   * @access private
-   * @param $filters
-   * @throws Chargify_Exception
+   * @access  private
+   * @param   $filters
+   * @return  array sanitized filters
+   * @throws  Chargify_Exception
    */
   private function _sanitizeFilters($filters)
   {
@@ -104,6 +103,7 @@ class Chargify_Transaction extends Chargify_Common
    * 
    * @access  public
    * @param   array  $filters   Optional filters
+   * @return  array   Array of transaction objects
    * @throws  Chargify_Exception
    */
   public function by_site($filters = array())
@@ -144,11 +144,17 @@ class Chargify_Transaction extends Chargify_Common
    * @access  public
    * @param   int    $subscription_id   Optional filters
    * @param   array  $filters   Optional filters
+   * @return  array   Array of transaction objects
    * @throws  Chargify_Exception
    */
   public function by_subscription($subscription_id, $filters = array())
   {
     $sanitized_filters = array();
+    
+    if( ! is_numeric($subscription_id))
+    {
+      throw new Chargify_Exception('subscription id must be numeric');
+    }
     
     if(! empty($filters))
     {

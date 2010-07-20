@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Customer endpoint class
  *
@@ -15,6 +13,7 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com>
  * @copyright   2010 Aaron Ott
+ * @link        http://support.chargify.com/faqs/api/api-customers
  */
 
 /**
@@ -30,6 +29,7 @@ class Chargify_Customer extends Chargify_Common
    *
    * @access public
    * @throws Chargify_Exception
+   * @return array  Array of all customer objects
    */
   public function all()
   {
@@ -40,27 +40,29 @@ class Chargify_Customer extends Chargify_Common
   /**
    * by_id
    *
-   * @access    public
-   * @param     integer   $id     Chargify Customer Id
-   * @throws    Chargify_Exception
+   * @access  public
+   * @param   integer   $customer_id     Chargify Customer Id
+   * @return  object    Object matching the passed id
+   * @throws  Chargify_Exception
    */
-  public function by_id($id)
+  public function by_id($customer_id)
   {
-    if(!is_numeric($id))
+    if(!is_numeric($customer_id))
     {
-      throw new Chargify_Exception("ID must be numeric");
+      throw new Chargify_Exception("customer id must be numeric");
     }
     
-    $endpoint = 'customers/' . $id;
+    $endpoint = 'customers/' . $customer_id;
     return $this->send_request($endpoint);
   }
   
   /**
    * by_reference
    *
-   * @access    public
-   * @param     string      $value    Customer reference
-   * @throws    Chargify_Exception
+   * @access  public
+   * @param   string    $value    Customer reference
+   * @return  object    Object matching the passed id
+   * @throws  Chargify_Exception
    */
   public function by_reference($value)
   {
@@ -82,11 +84,11 @@ class Chargify_Customer extends Chargify_Common
    * )
    * @access    public
    * @param     array   $customer   Customer data
+   * @return    object  Newly created customer object
    * @throws    Chargify_Exception
    */
   public function create($customer)
-  {
-    
+  {    
     $required = array('first_name','last_name','email');
     $allowed = array('first_name','last_name','email','organization', 'reference');
     
@@ -117,18 +119,19 @@ class Chargify_Customer extends Chargify_Common
    * update
    *
    * @access    public
-   * @param     int     $id     Chargify Id
+   * @param     int     $customer_id     Chargify Customer Id
    * @param     array   $update Updated customer information
+   * @return    object    updated customer object
    * @throws    Chargify_Exception
    */
-  public function update($id, $update)
+  public function update($customer_id, $update)
   {
-    if(!is_numeric($id))
+    if(!is_numeric($customer_id))
     {
-      throw new Chargify_Exception("ID must be numeric");
+      throw new Chargify_Exception("customer id must be numeric");
     }
     
-    $endpoint = 'customers/' . $id;
+    $endpoint = 'customers/' . $customer_id;
     $response = $this->send_request($endpoint, json_encode($update), 'PUT');
     
     if(isset($response->errors))
@@ -145,20 +148,24 @@ class Chargify_Customer extends Chargify_Common
    *  Delete is not currently supported by the Chargify API
    *  
    * @access    public
-   * @param     int     $id     Chargify Id
+   * @param     int     $customer_id     Chargify Id
+   * @return    boolean
    * @throws    Chargify_Exception
    */
-  public function delete($id)
+  public function delete($customer_id)
   {
-    if(!is_numeric($id))
+    // currently not supported but kept for the future
+    throw new Chargify_Exception("Chargify_Customer::delete is currently not a supported API call.");
+    
+    if(!is_numeric($customer_id))
     {
       throw new Chargify_Exception("ID must be numeric");
     }
     
-    $endpoint = 'customers/' . $id;
+    $endpoint = 'customers/' . $customer_id;
     $response = $this->send_request($endpoint, '' , 'DELETE');
     
-    if($this->callInfo['http_code'] == 403)
+    if($this->callInfo['http_code'] !== 200)
     {
       throw new Chargify_Exception("Unable to delete customer: " . $response->errors[0]);
     }
