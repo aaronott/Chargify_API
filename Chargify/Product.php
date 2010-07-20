@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Product endpoint class
  *
@@ -15,6 +13,7 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com>
  * @copyright   2010 Aaron Ott
+ * @link        http://support.chargify.com/faqs/api/api-products
  */
 
 /**
@@ -29,6 +28,7 @@ class Chargify_Product extends Chargify_Common
    * all
    *
    * @access public
+   * @return array  Array of all product objects
    * @throws Chargify_Exception
    */
   public function all()
@@ -41,17 +41,18 @@ class Chargify_Product extends Chargify_Common
    * by_id
    *
    * @access  public
-   * @param   int   $id   Chargify Product Id
+   * @param   int   $product_id   Chargify Product Id
+   * @return  object    Object matching the passed id
    * @throws  Chargify_Exception
    */
-  public function by_id($id)
+  public function by_id($product_id)
   {
-    if( ! is_numeric($id))
+    if( ! is_numeric($product_id))
     {
       throw new Chargify_Exception("Id Must by numeric");
     }
     
-    $endpoint = 'products/' . $id;
+    $endpoint = 'products/' . $product_id;
     $result = $this->send_request($endpoint);
     
     if($this->callInfo['http_code'] != 200)
@@ -66,7 +67,8 @@ class Chargify_Product extends Chargify_Common
    * by_handle
    *
    * @access  public
-   * @param   int   $handle   Chargify Product Handle
+   * @param   string   $handle   Chargify Product Handle
+   * @return  object    Object matching the handle
    * @throws  Chargify_Exception
    */
   public function by_handle($handle)

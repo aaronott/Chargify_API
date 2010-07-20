@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * Subscription endpoint class
  *
@@ -15,6 +13,7 @@
  * @package     Chargify
  * @author      Aaron Ott <aaron.ott@gmail.com>
  * @copyright   2010 Aaron Ott
+ * @link        http://support.chargify.com/faqs/api/api-subscriptions
  */
 
 /**
@@ -28,8 +27,9 @@ class Chargify_Subscription extends Chargify_Common
   /**
    * listSubscriptions
    *
-   * @access public
-   * @throws Chargify_Exception
+   * @access    public
+   * @return    array   array of all subscription objects
+   * @throws    Chargify_Exception
    */
   public function all()
   {
@@ -41,17 +41,18 @@ class Chargify_Subscription extends Chargify_Common
    * by_customer
    *
    * @access  public
-   * @param   int   $id   Chargify Customer Id
+   * @param   int   $customer_id   Chargify Customer Id
+   * @return  array   Array of objects matching the customer id
    * @throws  Chargify_Exception
    */
-  public function by_customer($id)
+  public function by_customer($customer_id)
   {
-    if( ! is_numeric($id))
+    if( ! is_numeric($customer_id))
     {
-      throw new Chargify_Exception("ID must be numeric");
+      throw new Chargify_Exception("customer id must be numeric");
     }
     
-    $endpoint = 'customers/' . $id . '/subscriptions';
+    $endpoint = 'customers/' . $customer_id . '/subscriptions';
     return $this->send_request($endpoint);
   }
   
@@ -59,17 +60,18 @@ class Chargify_Subscription extends Chargify_Common
    * by_id
    *
    * @access  public
-   * @param   int   $subscriptionId   Chargify Subscription ID
+   * @param   int   $subscription_id   Chargify Subscription ID
+   * @return  object    Object matching the passed subscription id
    * @throws  Chargify_Exception
    */
-  public function by_id($subscriptionId)
+  public function by_id($subscription_id)
   {
-    if( ! is_numeric($subscriptionId))
+    if( ! is_numeric($subscription_id))
     {
       throw new Chargify_Exception("Subscription ID must be numeric");
     }
     
-    $endpoint = 'subscriptions/' . $subscriptionId;
+    $endpoint = 'subscriptions/' . $subscription_id;
     $result = $this->send_request($endpoint);
     
     return $result;
@@ -110,6 +112,7 @@ class Chargify_Subscription extends Chargify_Common
    *
    * @access  public
    * @param   array   $subscription   Array containing subscription information
+   * @return  object  Newly created subscription object
    * @throws  Chargify_Exception
    */
   public function create($subscription)
@@ -149,6 +152,7 @@ class Chargify_Subscription extends Chargify_Common
    * @access  public
    * @param   int     $subscription_id
    * @param   array   $subscription   Array containing subscription information
+   * @return  object  updated subscription object
    * @throws  Chargify_Exception
    */
   public function update($subscription_id, $subscription)
@@ -169,6 +173,7 @@ class Chargify_Subscription extends Chargify_Common
    * @access  public
    * @param   int     $subscription_id    Chargify Subscription ID
    * @param   string  $reason             cancelation message
+   * @return  boolean TRUE if subscription was deleted
    * @throws  Chargify_Exception
    */
   public function delete($subscription_id, $reason = '')
@@ -195,6 +200,7 @@ class Chargify_Subscription extends Chargify_Common
    *
    * @access  public
    * @param   int   $subscription_id    Chargify Subscription ID
+   * @return  updated subscription object
    * @throw   Chargify_Exception
    */
   public function reactivate($subscription_id)
@@ -207,7 +213,12 @@ class Chargify_Subscription extends Chargify_Common
     $endpoint = 'subscriptions/' . $subscription_id .'/reactivate';
     $result   = $this->send_request($endpoint, '', 'PUT');
     
-    return ($this->callInfo['http_code'] == 200);
+    if($this->callInfo != 200)
+    {
+      throw new Chargify_Exception("Unable to reactivate subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+    }
+    
+    return $result;
   }
   
   /**
@@ -220,6 +231,7 @@ class Chargify_Subscription extends Chargify_Common
    *
    * @access  public
    * @param   int   $subscription_id    Chargify Subscription ID
+   * @return  updated subscription object
    * @throw   Chargify_Exception
    */
   public function reset_balance($subscription_id)
@@ -232,15 +244,31 @@ class Chargify_Subscription extends Chargify_Common
     $endpoint = 'subscriptions/' . $subscription_id .'/reset_balance';
     $result   = $this->send_request($endpoint, '', 'PUT');
     
-    return ($this->callInfo['http_code'] == 200);
+    if($this->callInfo != 200)
+    {
+      throw new Chargify_Exception("Unable to reactivate subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+    }
+    
+    return $result;
   }
   
   /**
    * charge
    *
+   * You must include either 'amount' or 'amount_in_cents' and 'memo'
+   * <code>
+   * array(
+   *  amount => Amount to charge $10.00 would be represented as a string '10.00',
+   *  OR
+   *  amount_in_cents => Amount to charge in cents $10.00 would be 1000 passed as an int,
+   *  memo  => reason for the charge
+   * )
+   * </code>
    * @access public
    * @param   int   $subscription_id    Chargify Subscription ID
-   * @param   array $charge   
+   * @param   array $charge
+   * @return  object  charge object
+   * @link    http://support.chargify.com/faqs/api/api-charges#api-usage-json-charges-create
    * @throws Chargify_Exception
    */
   public function charge($subscription_id, $charge)
@@ -250,11 +278,27 @@ class Chargify_Subscription extends Chargify_Common
       throw new Chargify_Exception('subscription id must be numeric');
     }
     
+    if( !(isset($charge['amount']) XOR isset($charge['amount_in_cents']))
+        || ! isset($charge['memo']))
+    {
+      throw new Chargify_Exception("Missing required parameters");
+    }
+    
     $endpoint = 'subscriptions/' . $subscription_id . '/charges';
     $charge = json_encode(array('charge' => $charge));
     $result = $this->send_request($endpoint, $charge, 'POST');
     
-    return ($this->callInfo['http_code'] == 201);
+    if(isset($result->errors))
+    {
+      throw new Chargify_Exception("The following error was returned from Chargify: " . $result->errors[0]);
+    }
+    
+    if($this->callInfo != 201)
+    {
+      throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+    }
+    
+    return $result;
   }
   
   /**
@@ -271,7 +315,9 @@ class Chargify_Subscription extends Chargify_Common
    * @access public
    * @param   int   $subscription_id    Chargify Subscription id
    * @param   array $credit
-   * @throws Chargify_Exception
+   * @return  credit object if success
+   * @throws  Chargify_Exception
+   * @link    http://support.chargify.com/faqs/api/api-credits
    */
   public function credit($subscription_id, $credit)
   {
@@ -290,7 +336,12 @@ class Chargify_Subscription extends Chargify_Common
     
     $result = $this->send_request($endpoint, $credit, 'POST');
     
-    return ($this->callInfo['http_code'] == 201);
+    if($this->callInfo != 201)
+    {
+      throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+    }
+    
+    return $result;
   }
   
   /**
@@ -321,6 +372,7 @@ class Chargify_Subscription extends Chargify_Common
    * @param   int     $subscription_id    Chargify Subscription ID
    * @param   array   $prorate            Prorate data
    * @throws  Chargify_Exception
+   * @link    http://support.chargify.com/faqs/api/api-prorated-upgrades-downgrades
    */
   public function prorate($subscription_id, $prorate)
   {
@@ -342,7 +394,12 @@ class Chargify_Subscription extends Chargify_Common
     $endpoint = "subscriptions/".$subscription_id."/migrations";
     $prorate = json_encode($prorate);
     $result = $this->send_Request($endpoint, $prorate, 'POST');
-
-    return ($this->callInfo['http_code'] == 200);
+    
+    if($this->callInfo != 200)
+    {
+      throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+    }
+    
+    return $result;
   }
 }
