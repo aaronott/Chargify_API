@@ -239,7 +239,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   public function testReactivate($subscription_id)
   {
     $result = $this->Subscription->reactivate($subscription_id);
-    $this->assertTrue($result);
+    $this->assertTrue(isset($result->subscription));
   }
   
   /**
@@ -254,7 +254,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   public function testResetBalance($subscription_id)
   {
     $result = $this->Subscription->reset_balance($subscription_id);
-    $this->assertTrue($result);
+    $this->assertTrue(isset($result->subscription));
   }
   
     /**
@@ -287,7 +287,8 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   public function testCharge($subscription_id, $charge)
   {
     $result = $this->Subscription->charge($subscription_id, $charge);
-    $this->assertTrue($result);
+    $this->assertTrue(isset($result->charge));
+    $this->assertTrue((bool)$result->charge->success);
   }
   
     /**
@@ -318,7 +319,8 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   public function testCredit($subscription_id, $credit)
   {
     $result = $this->Subscription->credit($subscription_id, $credit);
-    $this->assertTrue($result);
+    $this->assertTrue(isset($result->credit));
+    $this->assertTrue((bool)$result->credit->success);
   }
   
   /**
@@ -350,7 +352,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
   function testProrate($subscription_id, $prorate)
   {
     $result = $this->Subscription->prorate($subscription_id, $prorate);
-    $this->assertTrue($result);
+    $this->assertTrue(isset($result->subscription));
   }
   
 }

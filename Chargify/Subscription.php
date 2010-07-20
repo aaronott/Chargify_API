@@ -213,7 +213,7 @@ class Chargify_Subscription extends Chargify_Common
     $endpoint = 'subscriptions/' . $subscription_id .'/reactivate';
     $result   = $this->send_request($endpoint, '', 'PUT');
     
-    if($this->callInfo != 200)
+    if($this->callInfo['http_code'] != 200)
     {
       throw new Chargify_Exception("Unable to reactivate subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
     }
@@ -244,7 +244,7 @@ class Chargify_Subscription extends Chargify_Common
     $endpoint = 'subscriptions/' . $subscription_id .'/reset_balance';
     $result   = $this->send_request($endpoint, '', 'PUT');
     
-    if($this->callInfo != 200)
+    if($this->callInfo['http_code'] != 200)
     {
       throw new Chargify_Exception("Unable to reactivate subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
     }
@@ -293,7 +293,7 @@ class Chargify_Subscription extends Chargify_Common
       throw new Chargify_Exception("The following error was returned from Chargify: " . $result->errors[0]);
     }
     
-    if($this->callInfo != 201)
+    if($this->callInfo['http_code'] != 201)
     {
       throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
     }
@@ -336,7 +336,7 @@ class Chargify_Subscription extends Chargify_Common
     
     $result = $this->send_request($endpoint, $credit, 'POST');
     
-    if($this->callInfo != 201)
+    if($this->callInfo['http_code'] != 201)
     {
       throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
     }
@@ -395,9 +395,9 @@ class Chargify_Subscription extends Chargify_Common
     $prorate = json_encode($prorate);
     $result = $this->send_Request($endpoint, $prorate, 'POST');
     
-    if($this->callInfo != 200)
+    if($this->callInfo['http_code'] != 200)
     {
-      throw new Chargify_Exception("Unable to charge subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
+      throw new Chargify_Exception("Unable to prorate subscription. Called:". $this->lastCall." Code:" . $this->callInfo['http_code'] . " Response:" . $this->lastResponse);
     }
     
     return $result;
