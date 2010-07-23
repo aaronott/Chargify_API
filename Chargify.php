@@ -15,7 +15,7 @@
  * @copyright   2010 Aaron Ott
  * @link        http://support.chargify.com/faqs/api
  */ 
-require_once 'Chargify/Common.php';
+//require_once 'Chargify/Common.php';
 require_once 'Chargify/Exception.php';
 
 abstract class Chargify

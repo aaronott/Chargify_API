@@ -33,7 +33,7 @@ abstract class Chargify_Response
      * @param       string      $type       Type of response to create
      * @param       string      $response   Raw response from API
      * @return      object      $instance   Instance of the Response object
-     * @throws      Services_Digg_Exception
+     * @throws      Chargify_Response_Exception
      */
     static public function factory($type, $response) {
         $file = 'Chargify/Response/' . $type . '.php';
