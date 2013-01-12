@@ -17,47 +17,47 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
 {
 
   protected $Customer;
-  
+
   public function setUp()
   {
     $this->Customer = Chargify::factory('Customer');
   }
-  
+
   /**
-	 * Provides test data for testListCustomers()
-	 *
-	 * @return array
-	 */
+   * Provides test data for testListCustomers()
+   *
+   * @return array
+   */
   function providerCustomer()
-	{
+  {
     return array(
       array(
       'reference' => 'test',
       ),
     );
-	}
-  
+  }
+
   /**
-	 * Provides test data for getCustomerById()
-	 *
-	 * @return array
-	 */
+   * Provides test data for getCustomerById()
+   *
+   * @return array
+   */
   function providerCustomerId()
-	{
+  {
     return array(
       array(
       'id' => 87058,
       ),
     );
-	}
-  
+  }
+
   /**
-	 * Provides test data for testCreateCustomer()
-	 *
-	 * @return array
-	 */
+   * Provides test data for testCreateCustomer()
+   *
+   * @return array
+   */
   function providerCreateCustomer()
-	{
+  {
     return array(
       // bad parameter
       array(
@@ -78,82 +78,82 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
             ), 201
       ),
     );
-	}
-  
+  }
+
   /**
-	 * Provides test data for testCreateCustomer()
-	 *
-	 * @return array
-	 */
+   * Provides test data for testCreateCustomer()
+   *
+   * @return array
+   */
   function providerUpdateCustomer()
-	{
+  {
     return array(
       // bad parameter
       array( 'id' => 87688),
     );
   }
-  
+
   /**
-	 * Provides test data for testDeleteCustomer()
-	 *
-	 * @return array
-	 */
+   * Provides test data for testDeleteCustomer()
+   *
+   * @return array
+   */
   function providerDeleteCustomer()
-	{
+  {
     return array(
       // bad parameter
       array( 'id' => 87694),
     );
   }
-  
+
   /**
-	 * Tests Chargify_Customer::all
-	 * 
-	 * @test
-	 * @dataProvider providerCustomer
-	 * @covers Chargify_Customer::all
-	 * @param array $value
-	 */
+   * Tests Chargify_Customer::all
+   *
+   * @test
+   * @dataProvider providerCustomer
+   * @covers Chargify_Customer::all
+   * @param array $value
+   */
   public function testCustomersAll($value)
   {
     $customers = $this->Customer->all();
-    
+
     $this->assertSame($value, $customers[0]->customer->reference);
     $this->assertTrue(is_array($customers));
   }
-  
+
   /**
-	 * Tests Chargify_Customer::by_id
-	 *
-	 * Get a customer by reference
-	 * 
-	 * @test
-	 * @dataProvider providerCustomerId
-	 * @covers Chargify_Customer::by_id
-	 * @param array $value
-	 */
+   * Tests Chargify_Customer::by_id
+   *
+   * Get a customer by reference
+   *
+   * @test
+   * @dataProvider providerCustomerId
+   * @covers Chargify_Customer::by_id
+   * @param array $value
+   */
   public function testById($value)
   {
     $customer = $this->Customer->by_id($value);
     $this->assertSame($value, $customer->customer->id);
   }
-  
+
   /**
-	 * Tests Chargify_Customer::by_reference
-	 *
-	 * Get a customer by id
-	 * 
-	 * @test
-	 * @dataProvider providerCustomer
-	 * @covers Chargify_Customer::by_reference
-	 * @param array $value
-	 */
+   * Tests Chargify_Customer::by_reference
+   *
+   * Get a customer by id
+   *
+   * @test
+   * @dataProvider providerCustomer
+   * @covers Chargify_Customer::by_reference
+   * @param array $value
+   */
   public function testByReference($value)
   {
     $customer = $this->Customer->by_reference($value);
     $this->assertSame($value, $customer->customer->reference);
   }
-  
+
   /**
    * Tests Chargify_Customer::create
    *
@@ -174,7 +174,7 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
     $this->assertSame($info['http_code'], $code);
     **/
   }
-  
+
   /**
    * Tests Chargify_Customer::update
    *
@@ -189,7 +189,7 @@ class Chargify_CustomerTest extends PHPUnit_Framework_TestCase
     $updatedcustomer = $this->Customer->update($id, $update);
     $this->assertSame($update['customer']['first_name'], $updatedcustomer->customer->first_name);
   }
-  
+
   /**
    * Tests Chargify_Customer::delete
    *
