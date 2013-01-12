@@ -16,12 +16,12 @@ require_once 'Chargify/Subscription.php';
 class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
 {
   protected $Subscription;
-  
+
   public function setUp()
   {
     $this->Subscription = Chargify::factory('Subscription');
   }
-  
+
   /**
    * provider for listSubscriptionsByCustomer
    *
@@ -32,7 +32,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
       array('id' => 87058,),
     );
   }
-  
+
   /**
    * provider for getSubscription
    *
@@ -43,7 +43,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
       array('id' => 88957,),
     );
   }
-  
+
   /**
    * provider for createSubscription
    */
@@ -63,8 +63,8 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
           "expiration_year":"2020"
         }
       }}
-      
-      
+
+
       {"subscription":{
         "product_handle":"[@product.handle]",
         "customer_id":"[@customer.id]",
@@ -74,7 +74,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
           "expiration_year":"2020"
         }
       }}
-      
+
       {"subscription":{
         "product_handle":"[@product.handle]",
         "customer_reference":"[@customer.reference]",
@@ -84,7 +84,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
           "expiration_year":"2020"
         }
       }}
-    */    
+    */
     return array(
       array(
         array(
@@ -103,7 +103,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
       )
     );
   }
-  
+
   /**
    * provider for updateSubscription
    */
@@ -121,7 +121,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
       )
     );
   }
-  
+
   /**
    * provider for deleteSubscription
    */
@@ -141,7 +141,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
                   array(88957)
                  );
   }
-  
+
   /**
    * Tests Chargify_Subscription::all
    *
@@ -153,7 +153,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $list = $this->Subscription->all();
     $this->assertTrue(is_array($list));
   }
-  
+
   /**
    * Tests Chargify_Subscription::by_customer
    *
@@ -167,7 +167,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $subscriptions = $this->Subscription->by_customer($id);
     $this->assertTrue(is_array($subscriptions));
   }
-  
+
   /**
    * Tests Chargify_Subscription::by_id
    *
@@ -181,7 +181,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $subscription = $this->Subscription->by_id($id);
     $this->assertTrue(is_object($subscription));
   }
-  
+
   /**
    * Tests Chargify_Subscription::create
    *
@@ -190,14 +190,14 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
    * @param   array  $subscription  Subscription information
    * @covers  Chargify_Subscription::create
    */
-  
+
   public function testCreate($subscription)
   {
     $result = $this->Subscription->create($subscription);
     $this->assertFalse(isset($result->errors));
     $this->assertTrue(isset($result->subscription));
   }
-  
+
   /**
    * Tests Chargify_Subscription::update
    *
@@ -213,7 +213,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $this->assertFalse(isset($result->errors));
     $this->assertTrue(isset($result->subscription));
   }
-  
+
   /**
    * Test Chargify_Subscription::delete
    *
@@ -227,7 +227,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $result = $this->Subscription->delete($subscription_id);
     $this->assertTrue($result);
   }
-  
+
   /**
    * Test Chargify_Subscription::reactivate
    *
@@ -241,7 +241,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $result = $this->Subscription->reactivate($subscription_id);
     $this->assertTrue(isset($result->subscription));
   }
-  
+
   /**
    * Test Chargify_Subscription::reset_balance
    *
@@ -250,13 +250,13 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
    * @param   int   $subscription_id    Chargify Subscription ID
    * @covers  Chargify_Subscription::reset_balance
    */
-  
+
   public function testResetBalance($subscription_id)
   {
     $result = $this->Subscription->reset_balance($subscription_id);
     $this->assertTrue(isset($result->subscription));
   }
-  
+
     /**
    * Provider for chargeSubscription
    *
@@ -274,7 +274,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
                       ),
                  );
   }
-  
+
   /**
    * Tests Chargify_Charge::charge
    *
@@ -290,7 +290,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $this->assertTrue(isset($result->charge));
     $this->assertTrue((bool)$result->charge->success);
   }
-  
+
     /**
    * Dataprovider for creditSubscription
    */
@@ -306,7 +306,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
                       ),
                  );
   }
-  
+
   /**
    * Tests Chargify_Credit::credit
    *
@@ -322,7 +322,7 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
     $this->assertTrue(isset($result->credit));
     $this->assertTrue((bool)$result->credit->success);
   }
-  
+
   /**
    * Provider for prorateSubscription
    *
@@ -339,20 +339,20 @@ class Chargify_SubscriptionTest extends PHPUnit_Framework_TestCase
                       ),
                  );
   }
-  
+
   /**
    * Tests Chargify_Prorate::prorate
    *
    * @test
-	 * @covers Chargify_Prorate::prorate
-	 * @dataProvider	providerProductId
-	 * @param		int		$subscription_id		Chargify Subscription
-	 * @param		array	$prorate						Prorate data
-	 */
+   * @covers Chargify_Prorate::prorate
+   * @dataProvider  providerProductId
+   * @param    int    $subscription_id    Chargify Subscription
+   * @param    array  $prorate            Prorate data
+   */
   function testProrate($subscription_id, $prorate)
   {
     $result = $this->Subscription->prorate($subscription_id, $prorate);
     $this->assertTrue(isset($result->subscription));
   }
-  
+
 }
