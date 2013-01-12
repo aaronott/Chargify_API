@@ -17,12 +17,12 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
 {
 
   protected $Product;
-  
+
   public function setUp()
   {
     $this->Product = Chargify::factory('Product');
   }
-  
+
   /**
    * Provider for getProductById
    *
@@ -34,7 +34,7 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
         array(6765),
     );
   }
-  
+
   /**
    * Provider for getProductByHandle
    *
@@ -46,19 +46,19 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
         array('level-1'),
     );
   }
-  
+
   /**
    * Tests Chargify_Product::all
    *
    * @test
-	 * @covers Chargify_Product::all
-	 */
+   * @covers Chargify_Product::all
+   */
   function testProductsAll()
   {
     $list = $this->Product->all();
     $this->assertTrue(is_array($list));
   }
-  
+
   /**
    * Tests Chargify_Product::by_id
    *
@@ -85,7 +85,7 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
   {
     $product = $this->Product->by_id(9999999);
   }
-  
+
   /**
    * Tests Chargify_Product::by_handle
    *
@@ -99,7 +99,7 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
     $product = $this->Product->by_handle($handle);
     $this->assertTrue(is_object($product));
   }
-  
+
   /**
    * Tests Chargify_Product::by_handle
    *
@@ -112,4 +112,4 @@ class Chargify_ProductTest extends PHPUnit_Framework_TestCase
     $product = $this->Product->by_handle('Does Not Exist');
   }
 }
-  
+

@@ -17,12 +17,12 @@ class Chargify_TransactionTest extends PHPUnit_Framework_TestCase
 {
 
   protected $Transaction;
-  
+
   public function setUp()
   {
     $this->Transaction = Chargify::factory('Transaction');
   }
-  
+
   /**
    * Provider for listTransactionsBySite
    */
@@ -36,7 +36,7 @@ class Chargify_TransactionTest extends PHPUnit_Framework_TestCase
                  ),
                 );
   }
-  
+
   /**
    * Provider for listTransactionsBySite
    */
@@ -50,21 +50,21 @@ class Chargify_TransactionTest extends PHPUnit_Framework_TestCase
                  ),
                 );
   }
-  
+
   /**
    * Tests Chargify_Transaction::by_site
    *
    * @test
    * @dataProvider  providerTransaction
    * @param   array $filters
-	 * @covers Chargify_Transaction::by_site
-	 */
+   * @covers Chargify_Transaction::by_site
+   */
   function testBySite($filters)
   {
-    $result = $this->Transaction->by_site($filters);    
+    $result = $this->Transaction->by_site($filters);
     $this->assertTrue(is_array($result));
   }
-  
+
   /**
    * Tests Chargify_Transaction::by_subscription
    *
@@ -72,12 +72,12 @@ class Chargify_TransactionTest extends PHPUnit_Framework_TestCase
    * @dataProvider  providerTransactionBySubscription
    * @param   int   $subscription_id
    * @param   array $filters
-	 * @covers Chargify_Transaction::by_subscription
-	 */
+   * @covers Chargify_Transaction::by_subscription
+   */
   function testBySubscription($subscription_id,$filters)
   {
-    $result = $this->Transaction->by_subscription($subscription_id,$filters);    
+    $result = $this->Transaction->by_subscription($subscription_id,$filters);
     $this->assertTrue(is_array($result));
   }
 }
-  
+
